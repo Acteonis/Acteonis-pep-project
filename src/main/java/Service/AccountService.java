@@ -67,12 +67,12 @@ public class AccountService{
                         return null;
 
                 }
-                return account;}
-
+                return account;
+        }
 
         /*public Account login(String username, String password) throws SQLException {
                 Account account = accountDAO.findByUsernameAndPassword(username, password);
-                if (account == null || account.getUsername().isEmpty() || account.getPassword().length() < 4) {
+                if (account == null) {
                         return null;
                 }
                 return account;

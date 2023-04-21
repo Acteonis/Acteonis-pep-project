@@ -72,7 +72,7 @@ If the creation of the message is not successful, the response status should be 
     }
 
     public Message getMessageById(int messageId) throws SQLException, IOException {
-        return messageDAO.retrieve_Message_by_ID(messageId);
+        return MessageDAO.retrieve_Message_by_ID(messageId);
     }
 
     public Optional<Message> deleteMessage(int messageId) throws SQLException {
@@ -104,14 +104,14 @@ updated message (including message_id, posted_by, message_text, and time_posted_
 and the response status should be 200, which is the default.
  The message existing on the database should have the updated message_text.*/
     public Message updateMessage(int message_id, Message message) throws SQLException, IOException {
-       Message updated_message= messageDAO.retrieve_Message_by_ID(message_id);
-        if(message.getMessage_text().isBlank() || message.getMessage_text().length()>=255 || messageDAO.retrieve_Message_by_ID(message_id)==null){
+        Message updated_message= MessageDAO.retrieve_Message_by_ID(message_id);
+        if(message.getMessage_text().isBlank() || message.getMessage_text().length()>=255 || MessageDAO.retrieve_Message_by_ID(message_id)==null){
             return null;}
 
-         messageDAO.updateMessage(message_id, message);
-         String message_text= message.getMessage_text();
-         updated_message.setMessage_text(message_text);
-         return updated_message;
+        messageDAO.updateMessage(message_id, message);
+        String message_text= message.getMessage_text();
+        updated_message.setMessage_text(message_text);
+        return updated_message;
     }
 
 

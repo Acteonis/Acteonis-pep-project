@@ -108,20 +108,22 @@ public class SocialMediaController {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(ctx.body(), Account.class);
         Account addedAccount = accountService.addAccount(account);
-        if (account.getUsername().isEmpty()) {
+        if(addedAccount==null){
+            //if (account.getUsername().isEmpty() || account.getPassword().length() < 4 || addedAccount==null) {
             ctx.status(400);
             ctx.json("");
             return;
         }
 
-        if (account.getPassword().length() < 4) {
+        /*if (account.getPassword().length() < 4) {
             ctx.status(400);
             ctx.json("");
             return;
         }
         if(addedAccount==null){
             ctx.status(400);
-        }else {
+        }*/
+        else {
             ctx.status(200);
             ctx.json(mapper.writeValueAsString(addedAccount));
         }
@@ -176,7 +178,7 @@ public class SocialMediaController {
         }
     }
 */
-        //context.json(bookService.getAllAvailableBooks()
+    //context.json(bookService.getAllAvailableBooks()
    /* private void postAccountHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
         Account account = mapper.readValue(ctx.body(), Account.class);
@@ -211,17 +213,18 @@ If the login is not successful, the response status should be 401. (Unauthorized
             ctx.status(401);
         }
     }
-        /*private void handleLogin (Context ctx) throws Exception {
-            Account account = ctx.bodyAsClass(Account.class);
-            Account existingAccount = accountService.login(account.getUsername(), account.getPassword());
-            if (existingAccount != null) {
-                ctx.json(existingAccount);
-            } else {
-                ctx.status(401);
-            }
-        }*/
 
-        //accountService.findByUsername(addedAccount.getUsername()).isPresent()
+    /*private void handleLogin (Context ctx) throws Exception {
+        Account account = ctx.bodyAsClass(Account.class);
+        Account existingAccount = accountService.login(account.getUsername(), account.getPassword());
+        if (existingAccount != null) {
+            ctx.json(existingAccount);
+        } else {
+            ctx.status(401);
+        }
+    }*/
+
+    //accountService.findByUsername(addedAccount.getUsername()).isPresent()
 
    /*private void postLoginHandler(Context ctx) throws JsonProcessingException {
         ObjectMapper mapper = new ObjectMapper();
@@ -252,22 +255,22 @@ If successful, the response body should contain a JSON of the message, including
  The response status should be 200, which is the default. The new message should be persisted to the database.
 If the creation of the message is not successful, the response status should be 400. (Client error)*/
 
-        private void postMessagesHandler (Context ctx) throws JsonProcessingException {
-            Object mapper = new ObjectMapper();
-            Message message = ((ObjectMapper) mapper).readValue(ctx.body(), Message.class);
-            Message addedMessage = messageService.addMessage(message);
+    private void postMessagesHandler (Context ctx) throws JsonProcessingException {
+        Object mapper = new ObjectMapper();
+        Message message = ((ObjectMapper) mapper).readValue(ctx.body(), Message.class);
+        Message addedMessage = messageService.addMessage(message);
 
-            if (message.getMessage_text().isEmpty() || message.getMessage_text().length() > 254) {
-                ctx.status(400);
-                return;
-            }
-
-            if (addedMessage == null) {
-                ctx.status(400);
-            } else {
-                ctx.json(((ObjectMapper) mapper).writeValueAsString(addedMessage));
-            }
+        if (message.getMessage_text().isEmpty() || message.getMessage_text().length() > 254) {
+            ctx.status(400);
+            return;
         }
+
+        if (addedMessage == null) {
+            ctx.status(400);
+        } else {
+            ctx.json(((ObjectMapper) mapper).writeValueAsString(addedMessage));
+        }
+    }
 
 
    /* public void createMessageHandle(Context ctx) throws SQLException, JsonProcessingException {
@@ -281,26 +284,26 @@ If the creation of the message is not successful, the response status should be 
         }
     }*/
 
-   /* private void newPostHandler(Context ctx) throws JsonProcessingException{
-        ObjectMapper mapper = new ObjectMapper();
-        Message message = mapper.readValue(ctx.body(), Message.class);
-        Message postedMessage = messageService.insert_Message(message);
-        if (postedMessage != null) {//?! Is it correct?! Do I need to check it?!
-            //ctx.status(200);
-            ctx.json(postedMessage);
-        } else {
-            ctx.status(400);
-        }
-}*/
+    /* private void newPostHandler(Context ctx) throws JsonProcessingException{
+         ObjectMapper mapper = new ObjectMapper();
+         Message message = mapper.readValue(ctx.body(), Message.class);
+         Message postedMessage = messageService.insert_Message(message);
+         if (postedMessage != null) {//?! Is it correct?! Do I need to check it?!
+             //ctx.status(200);
+             ctx.json(postedMessage);
+         } else {
+             ctx.status(400);
+         }
+ }*/
 /*As a user, I should be able to submit a GET request on the endpoint GET localhost:8080/messages.
 
 The response body should contain a JSON representation of a list containing all messages retrieved from the database.
 It is expected for the list to simply be empty if there are no messages.
 The response status should always be 200, which is the default.*/
-        public void getAllMessages (Context ctx){
-            List<Message> messages = messageService.getAllMessages();
-            ctx.json(messages);
-        }
+    public void getAllMessages (Context ctx){
+        List<Message> messages = messageService.getAllMessages();
+        ctx.json(messages);
+    }
 
 /*As a user, I should be able to submit a GET request on the endpoint GET localhost:8080/messages/{message_id}.
 
@@ -308,16 +311,16 @@ The response body should contain a JSON representation of the message identified
 It is expected for the response body to simply be empty if there is no such message.
 The response status should always be 200, which is the default.*/
 
-        public void getMessageById (Context context) throws SQLException, IOException {
-            int messageId = Integer.parseInt(context.pathParam("message_id"));
-            Message message = messageService.getMessageById(messageId);
+    public void getMessageById (Context context) throws SQLException, IOException {
+        int messageId = Integer.parseInt(context.pathParam("message_id"));
+        Message message = messageService.getMessageById(messageId);
 
-            if (message != null) {
-                context.json(message);
-            } else {
-                context.json("");
-            }
+        if (message != null) {
+            context.json(message);
+        } else {
+            context.json("");
         }
+    }
    /* private void getMessageByIDHandler(Context ctx) throws JsonProcessingException, SQLException {
         ObjectMapper mapper = new ObjectMapper();
         int id = Integer.parseInt(ctx.pathParam("message_id"));
@@ -339,16 +342,16 @@ If the message did not exist, the response status should be 200, but the respons
 This is because the DELETE verb is intended to be idempotent, ie,
 multiple calls to the DELETE endpoint should respond with the same type of response.*/
 
-        public void deleteMessage (Context ctx) throws Exception {
-            ObjectMapper mapper = new ObjectMapper();
-            int messageId = Integer.parseInt(ctx.pathParam("message_id"));
-            Optional<Message> message = messageService.deleteMessage(messageId);
-            if (message.isPresent()) {
-                ctx.result(mapper.writeValueAsString(message.get()));
-            } else {
-                ctx.result("");
-            }
+    public void deleteMessage (Context ctx) throws Exception {
+        ObjectMapper mapper = new ObjectMapper();
+        int messageId = Integer.parseInt(ctx.pathParam("message_id"));
+        Optional<Message> message = messageService.deleteMessage(messageId);
+        if (message.isPresent()) {
+            ctx.result(mapper.writeValueAsString(message.get()));
+        } else {
+            ctx.result("");
         }
+    }
 
        /* private void deleteMessageByIDHandler (Context ctx) throws JsonProcessingException {
             ObjectMapper mapper = new ObjectMapper();//Do I really need message as the parameter?!
@@ -420,11 +423,11 @@ The response body should contain a JSON representation of a list containing all 
  which is retrieved from the database. It is expected for the list to simply be empty if there are no messages.
  The response status should always be 200, which is the default.*/
 
-        public void getAllMessagesForUser (Context context) throws SQLException {
-            int userId = Integer.parseInt(context.pathParam("account_id"));
-            List<Message> messages = messageService.getAllMessagesForUser(userId);
-            context.json(messages);
-        }
+    public void getAllMessagesForUser (Context context) throws SQLException {
+        int userId = Integer.parseInt(context.pathParam("account_id"));
+        List<Message> messages = messageService.getAllMessagesForUser(userId);
+        context.json(messages);
+    }
 
     /*private void getMessagesByParticularUser (Context ctx)throws JsonProcessingException {
             ObjectMapper mapper = new ObjectMapper();

@@ -76,7 +76,7 @@ public class AccountDAO{
     }*/
 
 
-    public Account addAccount(Model.Account account){
+    public Account addAccount(Account account){
         Connection connection = ConnectionUtil.getConnection();
         try {
 
@@ -169,6 +169,22 @@ The login will be successful if and only if the username and password provided
   including its account_id. The response status should be 200 OK, which is the default.
 If the login is not successful, the response status should be 401. (Unauthorized)*/
 
+    public Account findByUsernameAndPassword(String username, String password) throws SQLException {
+        String sql = "SELECT * FROM account WHERE username=? AND password=?";
+        try (Connection connection = ConnectionUtil.getConnection();
+             PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, username);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                int accountId = rs.getInt("account_id");
+                String GetUsername = rs.getString("username");
+                String GetPassword = rs.getString("password");
+                return new Account(accountId, GetUsername, GetPassword);
+            }
+        }
+        return null;
+    }
 
 
     public Account accountLogin(String username, String password)  {
@@ -190,26 +206,6 @@ If the login is not successful, the response status should be 401. (Unauthorized
         }
         return null;
     }
-
-
-    public Account findByUsernameAndPassword(String username, String password) throws SQLException {
-        String sql = "SELECT * FROM account WHERE username=? AND password=?";
-        try (Connection connection = ConnectionUtil.getConnection();
-             PreparedStatement ps = connection.prepareStatement(sql)) {
-            ps.setString(1, username);
-            ps.setString(2, password);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                int accountId = rs.getInt("account_id");
-                String GetUsername = rs.getString("username");
-                String GetPassword = rs.getString("password");
-                return new Account(accountId, GetUsername, GetPassword);
-            }
-        }
-        return null;
-    }
-
-
 
 
 

@@ -160,8 +160,8 @@ It is expected for the response body to simply be empty if there is no such mess
         LOG.error("Optional file " + fileName + " was not found.", ex);
     }*/
 
-public static Message retrieve_Message_by_ID(int id) throws IOException, SQLException {
-    Connection connection = ConnectionUtil.getConnection();
+    public static Message retrieve_Message_by_ID(int id) throws IOException, SQLException {
+        Connection connection = ConnectionUtil.getConnection();
 
         try {
             PreparedStatement ps = connection.prepareStatement("SELECT * FROM message WHERE message_id=?");
